@@ -2,10 +2,12 @@ package com.edutech.progressive.service.impl;
 
 import com.edutech.progressive.entity.Cricketer;
 import com.edutech.progressive.service.CricketerService;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class CricketerServiceImplArraylist implements CricketerService {
     private List<Cricketer> cricketerList = new ArrayList<>();
 

@@ -2,8 +2,7 @@ package com.edutech.progressive.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
-
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cricketer")
@@ -15,6 +14,11 @@ public class Cricketer implements Comparable<Cricketer> {
 
     @Column(name = "team_id")
     private int teamId;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "team_id", referencedColumnName = "team_id", insertable = false, updatable = false)
+    private Team team;
 
     @Column(name = "cricketer_name")
     private String cricketerName;
@@ -67,6 +71,14 @@ public class Cricketer implements Comparable<Cricketer> {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public String getCricketerName() {

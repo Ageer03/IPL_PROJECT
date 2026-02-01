@@ -1,6 +1,7 @@
 package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Cricketer;
+import com.edutech.progressive.exception.TeamCricketerLimitExceededException;
 import com.edutech.progressive.service.impl.CricketerServiceImplJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +41,12 @@ public class CricketerController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> addCricketer(@RequestBody Cricketer cricketer) {
+    public ResponseEntity<?> addCricketer(@RequestBody Cricketer cricketer) {
         try {
             Integer id = cricketerService.addCricketer(cricketer);
-            return ResponseEntity.ok(id);
+            return ResponseEntity.status(201).body(id);
+        } catch (TeamCricketerLimitExceededException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -64,13 +67,13 @@ public class CricketerController {
     public ResponseEntity<Void> deleteCricketer(@PathVariable int cricketerId) {
         try {
             cricketerService.deleteCricketer(cricketerId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @GetMapping("/byteam/{teamId}")
+    @GetMapping("/cricketer/team/{teamId}")
     public ResponseEntity<List<Cricketer>> getCricketersByTeam(@PathVariable int teamId) {
         try {
             return ResponseEntity.ok(cricketerService.getCricketersByTeam(teamId));

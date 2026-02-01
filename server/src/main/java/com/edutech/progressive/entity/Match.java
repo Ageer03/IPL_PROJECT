@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "matches")
@@ -17,8 +18,18 @@ public class Match {
     @Column(name = "first_team_id")
     private int firstTeamId;
 
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "first_team_id", referencedColumnName = "team_id", insertable = false, updatable = false)
+    private Team firstTeam;
+
     @Column(name = "second_team_id")
     private int secondTeamId;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "second_team_id", referencedColumnName = "team_id", insertable = false, updatable = false)
+    private Team secondTeam;
 
     @Column(name = "match_date")
     @Temporal(TemporalType.DATE)
@@ -35,6 +46,11 @@ public class Match {
 
     @Column(name = "winner_team_id")
     private int winnerTeamId;
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "winner_team_id", referencedColumnName = "team_id", insertable = false, updatable = false)
+    private Team winnerTeam;
 
     public Match() {
     }
@@ -67,12 +83,28 @@ public class Match {
         this.firstTeamId = firstTeamId;
     }
 
+    public Team getFirstTeam() {
+        return firstTeam;
+    }
+
+    public void setFirstTeam(Team firstTeam) {
+        this.firstTeam = firstTeam;
+    }
+
     public int getSecondTeamId() {
         return secondTeamId;
     }
 
     public void setSecondTeamId(int secondTeamId) {
         this.secondTeamId = secondTeamId;
+    }
+
+    public Team getSecondTeam() {
+        return secondTeam;
+    }
+
+    public void setSecondTeam(Team secondTeam) {
+        this.secondTeam = secondTeam;
     }
 
     public Date getMatchDate() {
@@ -113,6 +145,14 @@ public class Match {
 
     public void setWinnerTeamId(int winnerTeamId) {
         this.winnerTeamId = winnerTeamId;
+    }
+
+    public Team getWinnerTeam() {
+        return winnerTeam;
+    }
+
+    public void setWinnerTeam(Team winnerTeam) {
+        this.winnerTeam = winnerTeam;
     }
 
     @Override

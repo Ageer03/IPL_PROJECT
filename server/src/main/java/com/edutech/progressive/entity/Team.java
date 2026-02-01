@@ -2,6 +2,8 @@ package com.edutech.progressive.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "team")
@@ -22,6 +24,10 @@ public class Team implements Comparable<Team> {
 
     @Column(name = "establishment_year")
     private int establishmentYear;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<Cricketer> cricketers;
 
     public Team() {
     }
@@ -72,6 +78,14 @@ public class Team implements Comparable<Team> {
 
     public void setEstablishmentYear(int establishmentYear) {
         this.establishmentYear = establishmentYear;
+    }
+
+    public List<Cricketer> getCricketers() {
+        return cricketers;
+    }
+
+    public void setCricketers(List<Cricketer> cricketers) {
+        this.cricketers = cricketers;
     }
 
     @Override

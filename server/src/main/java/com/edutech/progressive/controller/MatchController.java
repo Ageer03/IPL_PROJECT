@@ -1,6 +1,7 @@
 package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Match;
+import com.edutech.progressive.exception.NoMatchesFoundException;
 import com.edutech.progressive.service.impl.MatchServiceImplJpa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class MatchController {
     public ResponseEntity<Integer> addMatch(@RequestBody Match match) {
         try {
             Integer id = matchService.addMatch(match);
-            return ResponseEntity.ok(id);
+            return ResponseEntity.status(201).body(id);
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -59,16 +60,18 @@ public class MatchController {
     public ResponseEntity<Void> deleteMatch(@PathVariable int matchId) {
         try {
             matchService.deleteMatch(matchId);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Match>> getAllMatchesByStatus(@PathVariable String status) {
+    public ResponseEntity<?> getAllMatchesByStatus(@PathVariable String status) {
         try {
             return ResponseEntity.ok(matchService.getAllMatchesByStatus(status));
+        } catch (NoMatchesFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         } catch (SQLException e) {
             return ResponseEntity.internalServerError().build();
         }

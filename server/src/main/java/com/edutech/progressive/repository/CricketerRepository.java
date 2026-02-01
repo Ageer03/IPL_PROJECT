@@ -2,10 +2,22 @@ package com.edutech.progressive.repository;
 
 import com.edutech.progressive.entity.Cricketer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
 public interface CricketerRepository extends JpaRepository<Cricketer, Integer> {
-    List<Cricketer> findByTeamId(int teamId);
+    Cricketer findByCricketerId(int cricketerId);
+
+    List<Cricketer> findByTeam_TeamId(int teamId);
+
+    long countByTeam_TeamId(int teamId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Cricketer c WHERE c.team.teamId = ?1")
+    void deleteByTeamId(int teamId);
 }
