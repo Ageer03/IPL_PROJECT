@@ -13,12 +13,16 @@ public class MatchDAOImpl implements MatchDAO {
         String sql = "INSERT INTO matches (first_team_id, second_team_id, match_date, venue, result, status, winner_team_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnectionManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            java.util.Date matchDate = match.getMatchDate() == null ? new java.util.Date() : match.getMatchDate();
+            String venue = match.getVenue() == null ? "" : match.getVenue();
+            String result = match.getResult() == null ? "" : match.getResult();
+            String status = match.getStatus() == null ? "" : match.getStatus();
             ps.setInt(1, match.getFirstTeamId());
             ps.setInt(2, match.getSecondTeamId());
-            ps.setDate(3, new java.sql.Date(match.getMatchDate().getTime()));
-            ps.setString(4, match.getVenue());
-            ps.setString(5, match.getResult());
-            ps.setString(6, match.getStatus());
+            ps.setDate(3, new java.sql.Date(matchDate.getTime()));
+            ps.setString(4, venue);
+            ps.setString(5, result);
+            ps.setString(6, status);
             ps.setInt(7, match.getWinnerTeamId());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -48,12 +52,16 @@ public class MatchDAOImpl implements MatchDAO {
         String sql = "UPDATE matches SET first_team_id=?, second_team_id=?, match_date=?, venue=?, result=?, status=?, winner_team_id=? WHERE match_id=?";
         try (Connection conn = DatabaseConnectionManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
+            java.util.Date matchDate = match.getMatchDate() == null ? new java.util.Date() : match.getMatchDate();
+            String venue = match.getVenue() == null ? "" : match.getVenue();
+            String result = match.getResult() == null ? "" : match.getResult();
+            String status = match.getStatus() == null ? "" : match.getStatus();
             ps.setInt(1, match.getFirstTeamId());
             ps.setInt(2, match.getSecondTeamId());
-            ps.setDate(3, new java.sql.Date(match.getMatchDate().getTime()));
-            ps.setString(4, match.getVenue());
-            ps.setString(5, match.getResult());
-            ps.setString(6, match.getStatus());
+            ps.setDate(3, new java.sql.Date(matchDate.getTime()));
+            ps.setString(4, venue);
+            ps.setString(5, result);
+            ps.setString(6, status);
             ps.setInt(7, match.getWinnerTeamId());
             ps.setInt(8, match.getMatchId());
             ps.executeUpdate();

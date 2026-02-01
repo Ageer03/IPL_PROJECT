@@ -13,12 +13,14 @@ public class CricketerDAOImpl implements CricketerDAO {
         String sql = "INSERT INTO cricketer (team_id, cricketer_name, age, nationality, experience, role, total_runs, total_wickets) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnectionManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            String nationality = cricketer.getNationality() == null ? "" : cricketer.getNationality();
+            String role = cricketer.getRole() == null ? "" : cricketer.getRole();
             ps.setInt(1, cricketer.getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
-            ps.setString(4, cricketer.getNationality());
+            ps.setString(4, nationality);
             ps.setInt(5, cricketer.getExperience());
-            ps.setString(6, cricketer.getRole());
+            ps.setString(6, role);
             ps.setInt(7, cricketer.getTotalRuns());
             ps.setInt(8, cricketer.getTotalWickets());
             ps.executeUpdate();
@@ -50,12 +52,14 @@ public class CricketerDAOImpl implements CricketerDAO {
         String sql = "UPDATE cricketer SET team_id=?, cricketer_name=?, age=?, nationality=?, experience=?, role=?, total_runs=?, total_wickets=? WHERE cricketer_id=?";
         try (Connection conn = DatabaseConnectionManager.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
+            String nationality = cricketer.getNationality() == null ? "" : cricketer.getNationality();
+            String role = cricketer.getRole() == null ? "" : cricketer.getRole();
             ps.setInt(1, cricketer.getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
-            ps.setString(4, cricketer.getNationality());
+            ps.setString(4, nationality);
             ps.setInt(5, cricketer.getExperience());
-            ps.setString(6, cricketer.getRole());
+            ps.setString(6, role);
             ps.setInt(7, cricketer.getTotalRuns());
             ps.setInt(8, cricketer.getTotalWickets());
             ps.setInt(9, cricketer.getCricketerId());
