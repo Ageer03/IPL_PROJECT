@@ -38,51 +38,48 @@ public class MatchServiceImplJpa implements MatchService {
 
     @Override
     public Integer addMatch(Match match) throws SQLException {
-        if (match.getFirstTeamId() == 0) {
-            Team t = match.getFirstTeam();
-            if (t != null)
-                match.setFirstTeamId(t.getTeamId());
-        }
-        if (match.getSecondTeamId() == 0) {
-            Team t = match.getSecondTeam();
-            if (t != null)
-                match.setSecondTeamId(t.getTeamId());
-        }
-        if (match.getWinnerTeamId() == 0) {
-            Team t = match.getWinnerTeam();
-            if (t != null)
-                match.setWinnerTeamId(t.getTeamId());
-        }
+        // if(match.getFirstTeamId()==0 && match.getFirstTeam()!=null){
+        //     match.setFirstTeamId(match.getFirstTeam().getTeamId());
+        // }
+        // if(match.getSecondTeamId()==0 && match.getSecondTeam()!=null){
+        //     match.setSecondTeamId(match.getSecondTeam().getTeamId());
+        // }
+        // if(match.getWinnerTeamId()==0 && match.getWinnerTeam()!=null){
+        //     match.setWinnerTeamId(match.getWinnerTeam().getTeamId());
+        // }
         Match saved = matchRepository.save(match);
         return saved.getMatchId();
+        
     }
 
     @Override
     public void updateMatch(Match match) throws SQLException {
-        if (match.getFirstTeamId() == 0) {
-            Team t = match.getFirstTeam();
-            if (t != null)
-                match.setFirstTeamId(t.getTeamId());
-        }
-        if (match.getSecondTeamId() == 0) {
-            Team t = match.getSecondTeam();
-            if (t != null)
-                match.setSecondTeamId(t.getTeamId());
-        }
-        if (match.getWinnerTeamId() == 0) {
-            Team t = match.getWinnerTeam();
-            if (t != null)
-                match.setWinnerTeamId(t.getTeamId());
-        }
-        matchRepository.save(match);
+        Match existing=matchRepository.findById(match.getMatchId()).orElseThrow(()->new SQLException("Match not found"));
+        existing.setMatchDate(match.getMatchDate());
+        existing.setVenue(match.getVenue());
+        existing.setStatus(match.getStatus());
+        // if (match.getFirstTeamId() == 0) {
+            existing.setFirstTeamId(match.getFirstTeamId());
+        //}
+        //if (match.getSecondTeamId() == 0) {
+            existing.setSecondTeamId(match.getSecondTeamId());
+        //}
+        //if (match.getWinnerTeamId() == 0) {
+            existing.setWinnerTeamId(match.getWinnerTeamId());
+        //}
+        matchRepository.save(existing);
     }
 
     @Override
     public void deleteMatch(int matchId) throws SQLException {
-        if (ticketBookingRepository != null) {
-            ticketBookingRepository.deleteByMatchId(matchId);
+        // if (ticketBookingRepository != null) {
+        //     ticketBookingRepository.deleteByMatchId(matchId);
+        // }/
+        if(!matchRepository.existsById(matchId)){
+              throw new SQLException("Match not found");
         }
         matchRepository.deleteById(matchId);
+        
     }
 
     @Override

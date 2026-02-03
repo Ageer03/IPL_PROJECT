@@ -11,6 +11,8 @@ import com.edutech.progressive.repository.TicketBookingRepository;
 import com.edutech.progressive.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
@@ -77,19 +79,20 @@ public class TeamServiceImplJpa implements TeamService {
     }
 
     @Override
+    @Transactional
     public void deleteTeam(int teamId) throws SQLException {
-        if (ticketBookingRepository != null) {
-            ticketBookingRepository.deleteByTeamId(teamId);
-        }
-        if (matchRepository != null) {
-            matchRepository.deleteByTeamId(teamId);
-        }
-        if (cricketerRepository != null) {
-            cricketerRepository.deleteByTeamId(teamId);
-        }
-        if (voteRepository != null) {
-            voteRepository.deleteByTeamId(teamId);
-        }
+        // if (ticketBookingRepository != null) {
+        //     ticketBookingRepository.deleteByTeamId(teamId);
+        // }
+        // if (matchRepository != null) {
+        //     matchRepository.deleteByTeamId(teamId);
+        // }
+        // if (cricketerRepository != null) {
+        //     cricketerRepository.deleteByTeamId(teamId);
+        // }
+        // if (voteRepository != null) {
+        //     voteRepository.deleteByTeamId(teamId);
+        // }
         teamRepository.deleteById(teamId);
     }
 }

@@ -2,6 +2,7 @@ package com.edutech.progressive.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +30,7 @@ public class Team implements Comparable<Team> {
 
     @JsonIgnore
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<Cricketer> cricketers;
+    private List<Cricketer> cricketers=new ArrayList<>();
 
     public Team() {
     }
